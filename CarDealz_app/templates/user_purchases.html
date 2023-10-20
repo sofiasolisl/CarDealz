@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CarDealz | My Purchases</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-dark border-bottom border-body" data-bs-theme="dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">CarDealz </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{url_for('dashboard')}}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{url_for('user_purchases')}}">My Purchases</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{url_for('logout')}}">Log Out</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <main class="col-10 container text-center">
+        <div class=" d-flex justify-content-end mb-4">
+            <a class="btn btn-info mt-4 ms-2" href="{{url_for('dashboard')}}" role="button">Home</a>
+            <a class="btn btn-info mt-4 ms-2" href="{{url_for('logout')}}" role="button">Logout</a>
+        </div>
+        <div class="container col-10 bg-info-subtle rounded p-3">
+            <h1>{{user.fname}}'s Purchases</h1>
+            <div class="container col-10 ">
+                <table class="table mt-4  table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th> Make </th>
+                            <th> Model </th>
+                            <th> Year </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for purchase in all_user_purchases %}
+                        <tr>
+                            <td>{{purchase.make}}</td>
+                            <td>{{purchase.model}}</td>
+                            <td>{{purchase.year}}</td>
+                        </tr>
+                        {%endfor%}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</body>

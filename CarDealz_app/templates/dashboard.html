@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CarDealz | Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-dark border-bottom border-body" data-bs-theme="dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">CarDealz </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{url_for('dashboard')}}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{url_for('user_purchases')}}">My Purchases</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{url_for('logout')}}">Log Out</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <main class="col-10 container text-center">
+        <div class=" d-flex justify-content-end">
+            <a class="btn btn-info mt-4 " href="{{url_for('user_purchases')}}" role="button">My Purchases</a>
+            <a class="btn btn-info mt-4 ms-2" href="{{url_for('logout')}}" role="button">Logout</a>
+        </div>
+
+        <h1 class="text-center mt-4 mb-4">Welcome to CarDealz, {{user.fname}}!</h1>
+
+        <div class="m-3"> {% with messages = get_flashed_messages() %}     
+            {% if messages %}                            
+                {% for message in messages %}            
+                    <p class="bg-danger text-light rounded m-1">{{message}}</p>                   
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        </div>
+        <table class="table table-striped table-hover">
+            <tr>
+                <th>Model</th>
+                <th>Year</th>
+                <th>Seller</th>
+                <th>Actions</th>
+            </tr>
+            <tr>
+                {%for car in all_cars:%}
+                <tr>
+                    <td>{{car.model}}</td>
+                    <td>{{car.year}}</td>
+                    
+                    {%for owner_info in owners_info%}
+                        {%if owner_info.car_id==car.id%}
+                            <td>{{owner_info.get('fname')}} {{owner_info.get('lname')}}</td>
+                        {%endif%}
+                    {%endfor%}
+                    
+                        {%if car.id in all_purchased_cars %}
+                            <td>SOLD</td>
+                        {%else%}
+                            {%if car.user_owner_id==user.id%}
+                                <td> <a href="{{url_for('edit',car_id=car.id)}}" class="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Edit</a> | <a href="{{url_for('delete',car_id=car.id)}}" class="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Delete</a></td>
+                            {%else%}
+                                <td><a href="{{url_for('show',car_id=car.id)}}" class="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">View car</a></td>
+                            {%endif%}
+                        {%endif%}
+
+                </tr>
+                {%endfor%}
+            </tr>
+        </table>
+        <div class=" d-flex justify-content-end">
+            <a class="btn btn-info mt-4" href="{{url_for('new')}}" role="button">Add a car</a>
+    </main>
+</body>
+</html>
